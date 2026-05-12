@@ -19,6 +19,7 @@ async def fetch_all_market_data() -> dict:
             _fetch_tasas_plazo_fijo(client),
             _fetch_riesgo_pais(client),
             _fetch_crypto(client),
+            _fetch_forex(client),
             return_exceptions=True,
         )
 
@@ -171,3 +172,19 @@ async def _fetch_crypto(client: httpx.AsyncClient) -> dict:
         }
     except Exception:
         return {"btc_usd": None, "eth_usd": None}
+
+
+async def _fetch_forex(client: httpx.AsyncClient) -> dict:
+    """
+    Fuente: Yahoo Finance — tipo de cambio EUR/USD en tiempo real.
+    Se usa para calcular EUR/ARS derivado: eur_ars = eur_usd × mep_venta.
+    """
+    try:
+        url = "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD=X?interval=1d&range=1d"
+        r = await client.get(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+        r.raise_for_status()
+        data = r.json()
+        eur_usd = data["chart"]["result"][0]["meta"]["regularMarketPrice"]
+        return {"eur_usd": round(float(eur_usd), 4)}
+    except Exception:
+        return {"eur_usd": None}
