@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { objetivos, recomendaciones, explicaciones } from '../data/explicaciones.js'
+import { objetivos, recomendaciones } from '../data/explicaciones.js'
 import InstrumentosExplorer from '../components/InstrumentosExplorer.jsx'
 import GlosarioSection from '../components/GlosarioSection.jsx'
 import { SkeletonTable } from '../components/ui/Skeleton.jsx'
 import { useComparison } from '../hooks/useMarketData.js'
 import { useFinanceStore } from '../store/useFinanceStore.js'
-import OnboardingModal from '../components/onboarding/OnboardingModal.jsx'
 
 const RIESGO_LABEL = ['', 'Muy bajo', 'Bajo', 'Moderado', 'Alto', 'Muy alto']
 const RIESGO_COLOR = ['', 'text-green-400', 'text-lime-400', 'text-yellow-400', 'text-orange-400', 'text-red-400']
@@ -24,10 +22,8 @@ export default function BussolePage() {
   const [objetivoSeleccionado, setObjetivoSeleccionado] = useState(
     localStorage.getItem('financeai_objetivo') || null
   )
-  const [onboardingOpen, setOnboardingOpen] = useState(false)
   const { monto } = useFinanceStore()
   const { data: compare, isLoading: compareLoading } = useComparison(monto)
-  const navigate = useNavigate()
 
   const inversiones = compare?.inversiones || []
   const instrumentosRecomendados = objetivoSeleccionado
@@ -37,7 +33,6 @@ export default function BussolePage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-12">
 
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-semibold text-white mb-2">🧭 La Brújula</h1>
         <p className="text-gray-400">Entendé tu dinero antes de moverlo</p>
@@ -68,15 +63,6 @@ export default function BussolePage() {
             </button>
           ))}
         </div>
-
-        {objetivoSeleccionado && (
-          <button
-            onClick={() => setOnboardingOpen(true)}
-            className="flex items-center gap-2 text-sm text-accent border border-accent/30 rounded-lg px-4 py-2 hover:bg-accent/10 transition-colors"
-          >
-            🎓 Ver guía paso a paso para este objetivo
-          </button>
-        )}
       </section>
 
       {/* Sección 2: Tabla rendimientos reales */}
@@ -100,7 +86,7 @@ export default function BussolePage() {
                 </tr>
               </thead>
               <tbody>
-                {inversiones.map((inv, i) => {
+                {inversiones.map((inv) => {
                   const esRecomendado = instrumentosRecomendados.includes(inv.nombre)
                   const riesgo = RIESGO_MAP[inv.nombre] || 3
                   return (
@@ -158,10 +144,6 @@ export default function BussolePage() {
         <h2 className="text-lg font-semibold text-gray-200">Glosario financiero</h2>
         <GlosarioSection />
       </section>
-
-      {onboardingOpen && (
-        <OnboardingModal onClose={() => setOnboardingOpen(false)} />
-      )}
     </div>
   )
 }
