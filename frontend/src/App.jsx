@@ -7,6 +7,7 @@ import StocksPage     from './pages/StocksPage.jsx'
 import ComparatorPage from './pages/ComparatorPage.jsx'
 import ChatPage       from './pages/ChatPage.jsx'
 import Navbar         from './components/layout/Navbar.jsx'
+import GlosarioButton from './components/GlosarioButton.jsx'
 
 function AppWithNav() {
   return (
@@ -19,6 +20,7 @@ function AppWithNav() {
         <Route path="/comparar"    element={<ComparatorPage />} />
         <Route path="/asistente"   element={<ChatPage />} />
       </Routes>
+      <GlosarioButton />
     </div>
   )
 }
