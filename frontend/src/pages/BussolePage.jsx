@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { objetivos, recomendaciones } from '../data/explicaciones.js'
 import InstrumentosExplorer from '../components/InstrumentosExplorer.jsx'
-import GlosarioSection from '../components/GlosarioSection.jsx'
 import { SkeletonTable } from '../components/ui/Skeleton.jsx'
 import { useComparison } from '../hooks/useMarketData.js'
 import { useFinanceStore } from '../store/useFinanceStore.js'
@@ -139,11 +138,6 @@ export default function BussolePage() {
         <InstrumentosExplorer />
       </section>
 
-      {/* Sección 4: Glosario */}
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-200">Glosario financiero</h2>
-        <GlosarioSection />
-      </section>
     </div>
   )
 }

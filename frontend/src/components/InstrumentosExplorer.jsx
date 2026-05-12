@@ -34,8 +34,10 @@ function InstrumentoModal({ nombre, exp, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="bg-[#111827] border border-border rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <div className="flex items-start justify-between p-5 border-b border-border sticky top-0 bg-[#111827] z-10">
+      <div className="bg-[#111827] border border-border rounded-2xl w-full max-w-lg flex flex-col" style={{ maxHeight: '90vh' }}>
+
+        {/* Header — siempre visible */}
+        <div className="flex items-start justify-between p-5 border-b border-border shrink-0">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-3xl">{exp.emoji}</span>
@@ -53,7 +55,8 @@ function InstrumentoModal({ nombre, exp, onClose }) {
           </button>
         </div>
 
-        <div className="p-5 space-y-5">
+        {/* Body — scrollable */}
+        <div className="flex-1 overflow-y-auto p-5 space-y-5">
           <div>
             <h4 className="text-accent text-sm font-semibold mb-2">📖 ¿Cómo funciona?</h4>
             <p className="text-gray-300 text-sm leading-relaxed">{exp.como_funciona}</p>
@@ -128,7 +131,8 @@ function InstrumentoModal({ nombre, exp, onClose }) {
           )}
         </div>
 
-        <div className="p-5 border-t border-border space-y-4">
+        {/* Footer — siempre visible, con links directos + botón IA */}
+        <div className="p-5 border-t border-border space-y-3 shrink-0 bg-[#111827]">
           <LinksDirectos nombreInstrumento={nombre} />
           <button
             onClick={() => {
