@@ -1,6 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import HomePage from './pages/HomePage.jsx'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import LandingPage    from './pages/LandingPage.jsx'
+import BussolePage    from './pages/BussolePage.jsx'
+import LabPage        from './pages/LabPage.jsx'
+import StocksPage     from './pages/StocksPage.jsx'
+import ComparatorPage from './pages/ComparatorPage.jsx'
+import ChatPage       from './pages/ChatPage.jsx'
+import Navbar         from './components/layout/Navbar.jsx'
 import OnboardingModal from './components/onboarding/OnboardingModal.jsx'
+
+function AppWithNav() {
+  return (
+    <div className="min-h-screen bg-bg">
+      <Navbar />
+      <Routes>
+        <Route path="/brujula"     element={<BussolePage />} />
+        <Route path="/laboratorio" element={<LabPage />} />
+        <Route path="/acciones"    element={<StocksPage />} />
+        <Route path="/comparar"    element={<ComparatorPage />} />
+        <Route path="/asistente"   element={<ChatPage />} />
+      </Routes>
+    </div>
+  )
+}
 
 export default function App() {
   const [onboardingOpen, setOnboardingOpen] = useState(false)
@@ -8,16 +30,19 @@ export default function App() {
   useEffect(() => {
     const done = localStorage.getItem('financeai_onboarding_done')
     if (!done) {
-      setOnboardingOpen(true)
+      setTimeout(() => setOnboardingOpen(true), 800)
     }
   }, [])
 
   return (
-    <>
-      <HomePage onOpenOnboarding={() => setOnboardingOpen(true)} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/*" element={<AppWithNav />} />
+      </Routes>
       {onboardingOpen && (
         <OnboardingModal onClose={() => setOnboardingOpen(false)} />
       )}
-    </>
+    </BrowserRouter>
   )
 }

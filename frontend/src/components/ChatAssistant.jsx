@@ -11,7 +11,7 @@ const SUGGESTIONS = [
   '¿Cómo protejo mis ahorros de la inflación?',
 ]
 
-export default function ChatAssistant() {
+export default function ChatAssistant({ fullPage = false }) {
   const { chatHistory, addMessage, pendingPrompt, clearPendingPrompt } = useFinanceStore()
   const { data: status } = useChatStatus()
   const [input, setInput] = useState('')
@@ -67,7 +67,7 @@ export default function ChatAssistant() {
   const groqOk = status?.groq_configured
 
   return (
-    <div className="bg-card border border-border rounded-xl flex flex-col" style={{ height: '520px' }}>
+    <div className="bg-card border border-border rounded-xl flex flex-col" style={{ height: fullPage ? '65vh' : '520px' }}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <div className="flex items-center gap-2">
