@@ -9,6 +9,8 @@ const navLinks = [
   { path: '/laboratorio', label: 'El Laboratorio',  icon: '🔬' },
   { path: '/acciones',    label: 'Acciones',        icon: '📈' },
   { path: '/comparar',    label: 'Comparar',        icon: '⚖️' },
+  { path: '/cartera',     label: 'Mi Cartera',      icon: '💼' },
+  { path: '/perfil',      label: 'Mi Perfil',       icon: '🎯' },
   { path: '/asistente',   label: 'Asistente IA',    icon: '🤖' },
 ]
 

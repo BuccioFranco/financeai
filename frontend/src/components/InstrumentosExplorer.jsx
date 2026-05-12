@@ -3,6 +3,7 @@ import { X, CheckCircle, XCircle, Bot, ChevronDown, ChevronUp } from 'lucide-rea
 import { explicaciones, categorias } from '../data/explicaciones.js'
 import { useFinanceStore } from '../store/useFinanceStore.js'
 import RiskBar from './RiskBar.jsx'
+import LinksDirectos from './LinksDirectos.jsx'
 
 const RIESGO_MAP = {
   "Plazo fijo tradicional": 1,
@@ -127,7 +128,8 @@ function InstrumentoModal({ nombre, exp, onClose }) {
           )}
         </div>
 
-        <div className="p-5 border-t border-border">
+        <div className="p-5 border-t border-border space-y-4">
+          <LinksDirectos nombreInstrumento={nombre} />
           <button
             onClick={() => {
               sendPrompt(`Explicame más sobre "${nombre}" para el mercado argentino actual y si me conviene para mi perfil`)

@@ -6,6 +6,8 @@ import LabPage        from './pages/LabPage.jsx'
 import StocksPage     from './pages/StocksPage.jsx'
 import ComparatorPage from './pages/ComparatorPage.jsx'
 import ChatPage       from './pages/ChatPage.jsx'
+import CarteraPage    from './pages/CarteraPage.jsx'
+import PerfilPage     from './pages/PerfilPage.jsx'
 import Navbar         from './components/layout/Navbar.jsx'
 import GlosarioButton from './components/GlosarioButton.jsx'
 
@@ -19,6 +21,8 @@ function AppWithNav() {
         <Route path="/acciones"    element={<StocksPage />} />
         <Route path="/comparar"    element={<ComparatorPage />} />
         <Route path="/asistente"   element={<ChatPage />} />
+        <Route path="/cartera"     element={<CarteraPage />} />
+        <Route path="/perfil"      element={<PerfilPage />} />
       </Routes>
       <GlosarioButton />
     </div>
