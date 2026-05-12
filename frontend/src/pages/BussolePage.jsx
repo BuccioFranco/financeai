@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { objetivos, recomendaciones, explicaciones } from '../data/explicaciones.js'
 import InstrumentosExplorer from '../components/InstrumentosExplorer.jsx'
 import GlosarioSection from '../components/GlosarioSection.jsx'
+import { SkeletonTable } from '../components/ui/Skeleton.jsx'
 import { useComparison } from '../hooks/useMarketData.js'
 import { useFinanceStore } from '../store/useFinanceStore.js'
 import OnboardingModal from '../components/onboarding/OnboardingModal.jsx'
@@ -25,7 +26,7 @@ export default function BussolePage() {
   )
   const [onboardingOpen, setOnboardingOpen] = useState(false)
   const { monto } = useFinanceStore()
-  const { data: compare } = useComparison(monto)
+  const { data: compare, isLoading: compareLoading } = useComparison(monto)
   const navigate = useNavigate()
 
   const inversiones = compare?.inversiones || []
@@ -79,7 +80,12 @@ export default function BussolePage() {
       </section>
 
       {/* Sección 2: Tabla rendimientos reales */}
-      {inversiones.length > 0 && (
+      {compareLoading && !compare ? (
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold text-gray-200">¿Cuánto rinde cada opción hoy?</h2>
+          <SkeletonTable />
+        </section>
+      ) : inversiones.length > 0 && (
         <section className="space-y-4">
           <h2 className="text-lg font-semibold text-gray-200">¿Cuánto rinde cada opción hoy?</h2>
           <div className="bg-card border border-border rounded-xl overflow-hidden">

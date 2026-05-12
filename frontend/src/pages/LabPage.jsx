@@ -2,6 +2,7 @@ import React from 'react'
 import AmountInput from '../components/AmountInput.jsx'
 import InvestmentCard from '../components/InvestmentCard.jsx'
 import InflationChart from '../components/InflationChart.jsx'
+import { SkeletonStatCard, SkeletonChart, SkeletonCard } from '../components/ui/Skeleton.jsx'
 import { useFinanceStore } from '../store/useFinanceStore.js'
 import { useComparison, useMarketData } from '../hooks/useMarketData.js'
 
@@ -18,7 +19,7 @@ function StatCard({ label, value, sub, color = 'text-white' }) {
 export default function LabPage() {
   const { monto } = useFinanceStore()
   const { data: compare, isLoading } = useComparison(monto)
-  const { data: market } = useMarketData()
+  const { data: market, isLoading: marketLoading } = useMarketData()
 
   const pesos   = compare?.inversiones?.filter(i => i.tipo === 'pesos')   || []
   const dolares = compare?.inversiones?.filter(i => i.tipo === 'dolares') || []
@@ -34,17 +35,29 @@ export default function LabPage() {
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <StatCard label="Dólar Blue" value={`$${fmt(market?.blue_venta)}`} color="text-blue-400" />
+        {marketLoading && !market ? (
+          Array(6).fill(0).map((_, i) => <SkeletonStatCard key={i} />)
+        ) : (
+          <>
+        <StatCard label="Dólar Oficial" value={`$${fmt(market?.oficial)}`} color="text-gray-300" sub={`Compra $${fmt(market?.oficial_compra)}`} />
+        <StatCard label="Dólar Blue" value={`$${fmt(market?.blue_venta)}`} color="text-blue-400" sub={`Compra $${fmt(market?.blue_compra)}`} />
         <StatCard label="Dólar MEP" value={`$${fmt(market?.mep_venta)}`} color="text-blue-300" />
         <StatCard label="Dólar CCL" value={`$${fmt(market?.ccl)}`} color="text-blue-300" />
-        <StatCard label="Dólar Oficial" value={`$${fmt(market?.oficial)}`} color="text-gray-400" />
         <StatCard
           label="IPC mensual"
           value={`${fmt(market?.ipc_mensual, 1)}%`}
           color={market?.ipc_mensual > 5 ? 'text-red-400' : 'text-yellow-400'}
-          sub="último dato INDEC"
+          sub={`Dato: ${market?.ipc_ultimo_dato ?? 'INDEC'}`}
+        />
+        <StatCard
+          label="Riesgo País"
+          value={market?.riesgo_pais ? `${market.riesgo_pais} pts` : 'N/D'}
+          color={(market?.riesgo_pais ?? 9999) > 800 ? 'text-red-400' : 'text-yellow-400'}
+          sub="EMBI+ JP Morgan"
         />
         <StatCard label="BTC" value={`$${fmt(market?.btc_usd)}`} color="text-yellow-400" sub="USD" />
+          </>
+        )}
       </div>
 
       {/* Layout: gráfico + comparador */}
@@ -53,18 +66,19 @@ export default function LabPage() {
           <InflationChart />
           <div className="bg-card border border-border rounded-xl p-4 space-y-2">
             <p className="text-sm font-semibold text-gray-300 mb-3">📊 Datos adicionales</p>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">IPC 12 meses</span>
-              <span className="font-mono text-orange-400">{fmt(market?.ipc_acumulada_12m, 1)}%</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">TNA Plazo Fijo est.</span>
-              <span className="font-mono text-gray-300">{fmt(market?.tasa_pf_estimada, 1)}%</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">ETH</span>
-              <span className="font-mono text-purple-400">USD {fmt(market?.eth_usd)}</span>
-            </div>
+            {[
+              ['IPC acum. 12m', `${fmt(market?.ipc_acumulada_12m, 1)}%`, 'text-orange-400'],
+              ['TNA PF promedio', `${fmt(market?.tasa_pf_promedio, 1)}%`, 'text-gray-300'],
+              ['TNA PF Nación', `${fmt(market?.tasa_pf_bna, 1)}%`, 'text-gray-300'],
+              ['Tarjeta (dólar)', `$${fmt(market?.tarjeta)}`, 'text-purple-400'],
+              ['Mayorista', `$${fmt(market?.mayorista)}`, 'text-gray-400'],
+              ['ETH', `USD ${fmt(market?.eth_usd)}`, 'text-purple-400'],
+            ].map(([label, value, color]) => (
+              <div key={label} className="flex justify-between text-sm">
+                <span className="text-gray-500">{label}</span>
+                <span className={`font-mono ${color}`}>{value}</span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -75,7 +89,10 @@ export default function LabPage() {
           </div>
 
           {isLoading ? (
-            <div className="text-center text-gray-600 py-8">Calculando opciones...</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">{Array(4).fill(0).map((_,i) => <SkeletonCard key={i} />)}</div>
+              <div className="space-y-2">{Array(4).fill(0).map((_,i) => <SkeletonCard key={i} />)}</div>
+            </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">

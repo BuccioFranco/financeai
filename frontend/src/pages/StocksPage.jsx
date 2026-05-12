@@ -4,6 +4,7 @@ import StockFilters from '../components/stocks/StockFilters.jsx'
 import StockCard from '../components/stocks/StockCard.jsx'
 import ComparisonPanel from '../components/stocks/ComparisonPanel.jsx'
 import StockDetailModal from '../components/stocks/StockDetailModal.jsx'
+import { SkeletonStockCard } from '../components/ui/Skeleton.jsx'
 import { useStockPrices } from '../hooks/useStockPrices.js'
 
 const PAGE_SIZE = 20
@@ -79,7 +80,9 @@ export default function StocksPage() {
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {sorted.slice(0, page * PAGE_SIZE).map(stock => (
+        {isLoading && Object.keys(prices).length === 0
+          ? Array(12).fill(0).map((_, i) => <SkeletonStockCard key={i} />)
+          : sorted.slice(0, page * PAGE_SIZE).map(stock => (
           <StockCard
             key={stock.ticker}
             stock={stock}
