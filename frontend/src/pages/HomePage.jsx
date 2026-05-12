@@ -5,6 +5,8 @@ import AmountInput from '../components/AmountInput.jsx'
 import InvestmentCard from '../components/InvestmentCard.jsx'
 import InflationChart from '../components/InflationChart.jsx'
 import ChatAssistant from '../components/ChatAssistant.jsx'
+import InstrumentosExplorer from '../components/InstrumentosExplorer.jsx'
+import GlosarioSection from '../components/GlosarioSection.jsx'
 import { useFinanceStore } from '../store/useFinanceStore.js'
 import { useComparison } from '../hooks/useMarketData.js'
 import { useChatStatus } from '../hooks/useMarketData.js'
@@ -128,6 +130,26 @@ export default function HomePage({ onOpenOnboarding }) {
 
         {/* Inflation chart */}
         <InflationChart />
+
+        {/* Explorador de instrumentos */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-2 h-2 bg-accent rounded-full" />
+            <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Todos los instrumentos del mercado argentino</h2>
+            <div className="flex-1 h-px bg-gray-800" />
+          </div>
+          <InstrumentosExplorer />
+        </div>
+
+        {/* Glosario */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full" />
+            <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Glosario financiero</h2>
+            <div className="flex-1 h-px bg-gray-800" />
+          </div>
+          <GlosarioSection />
+        </div>
 
         {/* Chat */}
         <ChatAssistant />
