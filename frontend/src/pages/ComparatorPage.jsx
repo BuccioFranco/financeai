@@ -31,7 +31,7 @@ export default function ComparatorPage() {
             { label: 'Blue',     value: `$${market.blue_venta?.toLocaleString('es-AR') ?? '—'}`, color: 'text-blue-300' },
             { label: 'CCL',      value: `$${market.ccl?.toLocaleString('es-AR') ?? '—'}`,        color: 'text-blue-300' },
             { label: 'Oficial',  value: `$${market.oficial?.toLocaleString('es-AR') ?? '—'}`,    color: 'text-gray-400' },
-            { label: 'EUR/USD',  value: market.eur_usd ? `${market.eur_usd}`,                    color: 'text-yellow-400' },
+            { label: 'EUR/USD',  value: market.eur_usd ? `${market.eur_usd}` : '—',              color: 'text-yellow-400' },
             { label: 'IPC mes',  value: `${market.ipc_mensual?.toFixed(1) ?? '—'}%`,             color: market.ipc_mensual > 5 ? 'text-red-400' : 'text-yellow-400' },
           ].map(({ label, value, color }) => (
             <div key={label} className="bg-card border border-border rounded-lg px-3 py-1.5">

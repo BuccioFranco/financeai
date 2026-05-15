@@ -157,7 +157,7 @@ export default function CurrencyConverter() {
                 value={monto}
                 onChange={handleMontoChange}
                 placeholder="0"
-                className="w-full bg-bg border border-border rounded-xl pl-8 pr-4 py-3 text-xl font-mono text-white focus:outline-none focus:border-accent transition-colors"
+                className={`w-full bg-bg border border-border rounded-xl pr-4 py-3 text-xl font-mono text-white focus:outline-none focus:border-accent transition-colors ${monedaInfo?.symbol === 'USD' ? 'pl-14' : 'pl-8'}`}
               />
             </div>
           </div>
