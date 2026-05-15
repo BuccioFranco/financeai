@@ -9,8 +9,12 @@ from routers import market, compare, chat, stocks
 
 app = FastAPI(title="FinanceAI API", version="2.0.0")
 
+_cors_origins = os.getenv("CORS_ORIGINS", "").split(",")
+_cors_origins = [o.strip() for o in _cors_origins if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=_cors_origins or ["*"],
     allow_origin_regex=r"http://localhost:\d+",
     allow_methods=["*"],
     allow_headers=["*"],

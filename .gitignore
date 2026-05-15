@@ -30,3 +30,12 @@ Thumbs.db
 # Portable runtimes (solo para desarrollo local)
 python312/
 node20/
+
+# Local Netlify folder
+.netlify
+
+# Claude AI tooling prompts
+CLAUDE_CODE_PROMPT_*.md
+
+# Bundled CLI tools
+tools/
